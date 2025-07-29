@@ -2,10 +2,10 @@ from tkinter import *
 
 
 # ---------------------------- CONSTANTS ------------------------------- #
-PINK = "#B9375D"
-RED = "#D25D5D"
-GREEN = "#E7D3D3"
-YELLOW = "#EEEEEE"
+PINK = "#222831"
+RED = "#393E46"
+GREEN = "#00ADB5"
+YELLOW = "#00FFF5"
 FONT_NAME = "Courier"
 WORK_MIN = 25
 SHORT_BREAK_MIN = 5
@@ -23,11 +23,11 @@ LONG_BREAK_MIN = 20
 
 window = Tk()
 window.title("Pomodoro")
-window.config(padx=100, pady=50, bg=GREEN)
+window.config(padx=40, pady=40, bg=GREEN)
 
 # app title
 
-app_title = Label(text="Timer", font=(FONT_NAME, 45, "bold"), fg=RED, bg=GREEN)
+title_label = Label(text="Timer", font=(FONT_NAME, 45, "bold"), fg=PINK, bg=GREEN)
 
 # canvas image
 
@@ -43,11 +43,11 @@ btn_reset = Button(text="reset", width=5, height=1, padx=10, pady=5, font=(FONT_
 
 # checkmark
 
-checkmark = Label(text="✔", font=(FONT_NAME, 20, "bold"), fg=PINK, bg=GREEN)
+checkmark = Label(text="✔", font=(FONT_NAME, 20, "bold"), fg=YELLOW, bg=GREEN)
 
 # placement
 
-app_title.grid(column=1, row=0)
+title_label.grid(column=1, row=0)
 canvas.grid(column=1, row=1)
 btn_start.grid(column=0, row=2)
 btn_reset.grid(column=2, row=2)
