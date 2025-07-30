@@ -7,9 +7,15 @@ RED = "#393E46"
 GREEN = "#00ADB5"
 YELLOW = "#00FFF5"
 FONT_NAME = "Courier"
-WORK_MIN = 25
-SHORT_BREAK_MIN = 5
-LONG_BREAK_MIN = 20
+# WORK_MIN = 25
+# SHORT_BREAK_MIN = 5
+# LONG_BREAK_MIN = 20
+
+WORK_MIN = 0.5
+SHORT_BREAK_MIN = 0.15
+LONG_BREAK_MIN = 0.3
+
+reps = 0
 
 # ---------------------------- TIMER RESET ------------------------------- # 
 
@@ -17,7 +23,29 @@ LONG_BREAK_MIN = 20
 
 
 def start_timer():
-    count_down(WORK_MIN * 60 - 1)
+    global reps
+    reps += 1
+
+    work_sec = WORK_MIN * 60
+    short_break_sec = SHORT_BREAK_MIN * 60
+    long_break_sec = LONG_BREAK_MIN * 60
+
+    print(reps)
+    print(work_sec)
+    print(short_break_sec)
+    print(long_break_sec)
+
+    if reps % 8 == 0:
+        print("LONG")
+        count_down(long_break_sec)
+    elif reps % 2 == 0:
+        print("SHORT")
+        count_down(short_break_sec)
+    else:
+        print("WORK")
+        count_down(work_sec)
+
+
 
 # ---------------------------- COUNTDOWN MECHANISM ------------------------------- # 
 
@@ -27,16 +55,18 @@ def count_down(count):
     # time_str = f"{count // 60}:{count % 60:02d}"
     canvas.itemconfig(timer_text, text=time_str)
     if count > 0:
-        window.after(1000, count_down, count - 1)
+        window.after(100, count_down, count - 1)
+    else:
+        start_timer()
 
 
 def get_timer_string(seconds):
-    str_min = seconds // 60
+    str_min = int(seconds // 60)
     if str_min < 10:
         str_min = f"0{str_min}"
-    str_sec = seconds % 60
+    str_sec = int(seconds % 60)
     if str_sec < 10:
-        str_sec = f"0{str_sec}"
+        str_sec = f"0{str_sec}"    
     return f"{str_min}:{str_sec}"
 
 
@@ -59,7 +89,7 @@ tomato_img = PhotoImage(file="tomato.png")
 canvas.create_image(100, 112, image=tomato_img)
 
 # timer
-timer_text = canvas.create_text(103, 130, text=get_timer_string(WORK_MIN * 60), fill="white", font=(FONT_NAME, 35, "bold"))
+timer_text = canvas.create_text(103, 130, text=get_timer_string(WORK_MIN * 60), fill="white", font=(FONT_NAME, 15, "bold"))
 
 # buttons
 
