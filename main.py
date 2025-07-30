@@ -7,6 +7,10 @@ RED = "#393E46"
 GREEN = "#00ADB5"
 YELLOW = "#00FFF5"
 FONT_NAME = "Courier"
+
+IDLE_TEXT = "Timer"
+WORK_TEXT = "Work"
+BREAK_TEXT = "Break"
 # WORK_MIN = 25
 # SHORT_BREAK_MIN = 5
 # LONG_BREAK_MIN = 20
@@ -36,13 +40,13 @@ def start_timer():
     print(long_break_sec)
 
     if reps % 8 == 0:
-        print("LONG")
+        title_label.config(text=BREAK_TEXT, fg=PINK)
         count_down(long_break_sec)
     elif reps % 2 == 0:
-        print("SHORT")
+        title_label.config(text=BREAK_TEXT, fg=RED)
         count_down(short_break_sec)
     else:
-        print("WORK")
+        title_label.config(text=WORK_TEXT, fg=YELLOW)
         count_down(work_sec)
 
 
@@ -51,9 +55,9 @@ def start_timer():
 
 
 def count_down(count):
-    time_str = get_timer_string(count)
-    # time_str = f"{count // 60}:{count % 60:02d}"
+    time_str = get_timer_string(count)    
     canvas.itemconfig(timer_text, text=time_str)
+
     if count > 0:
         window.after(100, count_down, count - 1)
     else:
