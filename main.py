@@ -19,9 +19,20 @@ WORK_MIN = 0.5
 SHORT_BREAK_MIN = 0.15
 LONG_BREAK_MIN = 0.3
 
+timer = None
 reps = 0
 
 # ---------------------------- TIMER RESET ------------------------------- # 
+
+
+def reset_timer():
+    global timer, reps
+    reps = 0
+    window.after_cancel(timer)
+    canvas.itemconfig(timer_text, text=get_timer_string(WORK_MIN * 60))
+    checkmark.config(text="")
+    title_label.config(text="Timer", fg=PINK)
+
 
 # ---------------------------- TIMER MECHANISM ------------------------------- # 
 
@@ -33,11 +44,6 @@ def start_timer():
     work_sec = WORK_MIN * 60
     short_break_sec = SHORT_BREAK_MIN * 60
     long_break_sec = LONG_BREAK_MIN * 60
-
-    print(reps)
-    print(work_sec)
-    print(short_break_sec)
-    print(long_break_sec)
 
     if reps % 8 == 0:
         title_label.config(text=BREAK_TEXT, fg=PINK)
@@ -58,10 +64,18 @@ def count_down(count):
     time_str = get_timer_string(count)    
     canvas.itemconfig(timer_text, text=time_str)
 
+    global timer
+
     if count > 0:
-        window.after(100, count_down, count - 1)
+        timer = window.after(100, count_down, count - 1)
     else:
         start_timer()
+
+        # set ckm symbol
+        global reps
+        ckm_symbol = "✔"
+        ckm_str = ckm_symbol * (reps // 2)
+        checkmark.config(text=ckm_str)
 
 
 def get_timer_string(seconds):
@@ -93,17 +107,18 @@ tomato_img = PhotoImage(file="tomato.png")
 canvas.create_image(100, 112, image=tomato_img)
 
 # timer
-timer_text = canvas.create_text(103, 130, text=get_timer_string(WORK_MIN * 60), fill="white", font=(FONT_NAME, 15, "bold"))
+timer_text = canvas.create_text(103, 130, text=get_timer_string(WORK_MIN * 60), fill="white", font=(FONT_NAME, 35, "bold"))
 
 # buttons
 
 btn_start = Button(text="start", width=5, height=1, padx=10, pady=5,
                    font=(FONT_NAME, 12, "bold"), fg=YELLOW, bg=RED, command=start_timer)
-btn_reset = Button(text="reset", width=5, height=1, padx=10, pady=5, font=(FONT_NAME, 12, "bold"), fg=YELLOW, bg=RED)
+btn_reset = Button(text="reset", width=5, height=1, padx=10, pady=5,
+                   font=(FONT_NAME, 12, "bold"), fg=YELLOW, bg=RED, command=reset_timer)
 
 # checkmark
 
-checkmark = Label(text="✔", font=(FONT_NAME, 20, "bold"), fg=YELLOW, bg=GREEN)
+checkmark = Label(font=(FONT_NAME, 15, "bold"), fg=YELLOW, bg=GREEN)
 
 # placement
 
